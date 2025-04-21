@@ -2,9 +2,9 @@
 
 namespace Lenorix\LaravelAiChat;
 
+use Lenorix\LaravelAiChat\Commands\LaravelAiChatCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Lenorix\LaravelAiChat\Commands\LaravelAiChatCommand;
 
 class LaravelAiChatServiceProvider extends PackageServiceProvider
 {

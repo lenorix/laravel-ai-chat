@@ -3,8 +3,8 @@
 namespace Lenorix\LaravelAiChat\Tests;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Orchestra\Testbench\TestCase as Orchestra;
 use Lenorix\LaravelAiChat\LaravelAiChatServiceProvider;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
