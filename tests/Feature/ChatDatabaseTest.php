@@ -3,7 +3,7 @@
 it('save messages', function () {
     $dbChat = \Lenorix\LaravelAiChat\Models\AiChat::create();
 
-    $aiChat = new class()
+    $aiChat = new class
     {
         use Lenorix\LaravelAiChat\Traits\ChatDatabase;
         use MalteKuhr\LaravelGPT\Concerns\HasChat;
@@ -26,7 +26,7 @@ it('load messages', function () {
     $dbChat->addMessage('This');
     $dbChat->addMessage('World');
 
-    $aiChat = new class()
+    $aiChat = new class
     {
         use Lenorix\LaravelAiChat\Traits\ChatDatabase;
         use MalteKuhr\LaravelGPT\Concerns\HasChat;
@@ -44,7 +44,7 @@ it('load messages', function () {
 });
 
 it('can create system prompt from chat', function () {
-    $aiChat = new class()
+    $aiChat = new class
     {
         use MalteKuhr\LaravelGPT\Concerns\HasChat;
     };
