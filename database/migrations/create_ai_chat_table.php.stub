@@ -8,12 +8,30 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('laravel_ai_chat_table', function (Blueprint $table) {
-            $table->id();
+        Schema::create('ai_chats', function (Blueprint $table) {
+            $table->ulid('id')->primary();
 
-            // add fields
+            $table->string('name')->nullable();
 
             $table->timestamps();
         });
+
+        Schema::create('ai_chat_messages', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+
+            $table->foreignUlid('ai_chat_id')->constrained('ai_chats')->cascadeOnDelete();
+
+            $table->enum('role', ['user', 'assistant']);
+
+            $table->text('content');
+
+            $table->timestamps();
+        });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('ai_chat_messages');
+        Schema::dropIfExists('ai_chats');
     }
 };
