@@ -68,7 +68,7 @@ class AiChat extends Model
             ->orderBy('id', 'asc');
     }
 
-    public function guessedName(): string
+    public function guessName(): string
     {
         $name = Cache::memo()->get('ai_chat_name_'.$this->id);
         if ($name) {
@@ -93,7 +93,7 @@ class AiChat extends Model
         return $name;
     }
 
-    public function nameOrGuess(): string
+    public function nameWithFallback(): string
     {
         $name = $this->name;
         if ($name) {
@@ -101,7 +101,7 @@ class AiChat extends Model
         }
 
         try {
-            return $this->guessedName();
+            return $this->guessName();
         } catch (\Exception $e) {
             return 'Unnamed';
         }
