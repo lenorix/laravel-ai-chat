@@ -22,6 +22,7 @@ trait ChatDatabase
             ->get()
             ->map(function (AiChatMessage $message) {
                 $role = ChatRole::tryFrom($message->role);
+
                 return new ChatMessage($role, content: $message->content);
             })
             ->reverse()

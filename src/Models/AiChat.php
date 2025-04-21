@@ -2,11 +2,10 @@
 
 namespace Lenorix\LaravelAiChat\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 
@@ -38,7 +37,7 @@ class AiChat extends Model
             $content = $message;
         }
 
-        if (!in_array($role, [ChatRole::USER->value, ChatRole::ASSISTANT->value])) {
+        if (! in_array($role, [ChatRole::USER->value, ChatRole::ASSISTANT->value])) {
             throw new \InvalidArgumentException('Invalid role provided. Must be either "user" or "assistant".');
         }
 

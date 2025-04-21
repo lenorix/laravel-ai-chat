@@ -3,9 +3,10 @@
 it('save messages', function () {
     $dbChat = \Lenorix\LaravelAiChat\Models\AiChat::create();
 
-    $aiChat = new class() {
-        use MalteKuhr\LaravelGPT\Concerns\HasChat;
+    $aiChat = new class
+    {
         use Lenorix\LaravelAiChat\Traits\ChatDatabase;
+        use MalteKuhr\LaravelGPT\Concerns\HasChat;
 
         protected function getAiChatFromDatabase(): \Lenorix\LaravelAiChat\Models\AiChat
         {
@@ -24,9 +25,10 @@ it('load messages', function () {
     $dbChat->addMessage('This');
     $dbChat->addMessage('World');
 
-    $aiChat = new class() {
-        use MalteKuhr\LaravelGPT\Concerns\HasChat;
+    $aiChat = new class
+    {
         use Lenorix\LaravelAiChat\Traits\ChatDatabase;
+        use MalteKuhr\LaravelGPT\Concerns\HasChat;
 
         protected function getAiChatFromDatabase(): \Lenorix\LaravelAiChat\Models\AiChat
         {
