@@ -87,7 +87,7 @@ class AiChat extends Model
                 ```
                 EOT,
                 JSON_PRETTY_PRINT
-            ));
+            ))->content;
 
         Cache::memo()->put('ai_chat_name_'.$this->id, $name, now()->addMinutes(5));
 
