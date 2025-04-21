@@ -11,21 +11,16 @@ trait ChatDatabase
 {
     abstract protected function getAiChatFromDatabase(): AiChat;
 
-    public function loadChatFromDatabase($totalMessages = 200): void
+    public function loadChatFromDatabase($maxMessages = 200): void
     {
         $this->messages = $this->getAiChatFromDatabase()
-            ->messages()
-            ->latest('created_at')
-            ->latest('id')
-            ->whereIn('role', [ChatRole::USER->value, ChatRole::ASSISTANT->value])
-            ->take($totalMessages)
+            ->chatMessages($maxMessages)
             ->get()
             ->map(function (AiChatMessage $message) {
                 $role = ChatRole::tryFrom($message->role);
 
                 return new ChatMessage($role, content: $message->content);
             })
-            ->reverse()
             ->toArray();
     }
 

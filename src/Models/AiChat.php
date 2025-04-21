@@ -46,4 +46,24 @@ class AiChat extends Model
             'content' => $content,
         ]);
     }
+
+    public function chatMessages(int $maxMessages = 200)
+    {
+        $latestMessages = $this->messages()
+            ->latest('created_at')
+            ->latest('id')
+            ->whereIn('role', [
+                ChatRole::USER->value,
+                ChatRole::ASSISTANT->value,
+            ])
+            ->take($maxMessages);
+
+        return $this->messages()
+            ->whereIn('id', function ($query) use ($latestMessages) {
+                $query->select('id')
+                    ->from($latestMessages);
+            })
+            ->orderBy('created_at', 'asc')
+            ->orderBy('id', 'asc');
+    }
 }
