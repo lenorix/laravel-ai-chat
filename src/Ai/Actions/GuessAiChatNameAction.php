@@ -9,7 +9,7 @@ class GuessAiChatNameAction extends GPTAction
 {
     public function systemMessage(): ?string
     {
-        return <<<EOT
+        return <<<'EOT'
             Guess a good brief name for the chat based on the following messages:
 
             The name should be a single word or a short phrase (less than 50 chars),
