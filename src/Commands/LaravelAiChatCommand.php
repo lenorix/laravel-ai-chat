@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace Lenorix\LaravelAiChat\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class LaravelAiChatCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'laravel-ai-chat';
 
     public $description = 'My command';
 
