@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
+use Illuminate\Support\Facades\Cache;
 
 class AiChat extends Model
 {
