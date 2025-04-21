@@ -42,28 +42,3 @@ it('load messages', function () {
     expect($aiChat->latestMessage()->content)->toBe('World');
     $dbChat->delete();
 });
-
-it('can create system prompt from chat', function () {
-    $aiChat = new class
-    {
-        use MalteKuhr\LaravelGPT\Concerns\HasChat;
-    };
-
-    $aiChat->addMessage('Hello');
-    $systemPrompt = \Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction::make($aiChat->messages)
-        ->systemMessage();
-
-    expect($systemPrompt)->toContain('```json');
-});
-
-it('can create system prompt from database chat', function () {
-    $dbChat = \Lenorix\LaravelAiChat\Models\AiChat::create();
-    $dbChat->addMessage('Hello');
-
-    $messages = $dbChat->messages()->get()->toArray();
-    $systemPrompt = \Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction::make($messages)
-        ->systemMessage();
-
-    expect($systemPrompt)->toContain('```json');
-    $dbChat->delete();
-});

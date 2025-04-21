@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 
+use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
+
 class AiChat extends Model
 {
     use HasFactory, HasUlids;
@@ -65,5 +67,43 @@ class AiChat extends Model
             })
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc');
+    }
+
+    public function guessedName(): string
+    {
+        $name = Cache::memo()->get('ai_chat_name_' . $this->id);
+        if ($name) {
+            return $name;
+        }
+
+        $messages = $this->chatMessages()
+            ->get()
+            ->toArray();
+
+        $name = GuessAiChatNameAction::make()
+            ->send(json_encode(<<<EOT
+                ```json
+                $messages
+                ```
+                EOT,
+                JSON_PRETTY_PRINT
+            ));
+
+        Cache::memo()->put('ai_chat_name_' . $this->id, $name, now()->addMinutes(5));
+        return $name;
+    }
+
+    public function nameOrGuess(): string
+    {
+        $name = $this->name;
+        if ($name) {
+            return $name;
+        }
+
+        try {
+            return $this->guessedName();
+        } catch (\Exception $e) {
+            return 'Unnamed';
+        }
     }
 }
