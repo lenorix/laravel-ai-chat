@@ -4,17 +4,20 @@ namespace Lenorix\LaravelAiChat\Traits;
 
 use Lenorix\LaravelAiChat\Models\AiChat;
 use Lenorix\LaravelAiChat\Models\AiChatMessage;
+use MalteKuhr\LaravelGPT\Concerns\HasChat;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 
 trait ChatDatabase
 {
-    abstract protected function getAiChatFromDatabase(): AiChat;
+    use HasChat;
 
-    public function loadChatFromDatabase($maxMessages = 200): void
+    abstract protected function getAiChat(): AiChat;
+
+    public function loadChat(?int $maxLatestMessages=null): static
     {
-        $this->messages = $this->getAiChatFromDatabase()
-            ->chatMessages($maxMessages)
+        $this->messages = $this->getAiChat()
+            ->chatMessages($maxLatestMessages ?: 200)
             ->get()
             ->map(function (AiChatMessage $message) {
                 $role = ChatRole::tryFrom($message->role);
@@ -22,10 +25,18 @@ trait ChatDatabase
                 return new ChatMessage($role, content: $message->content);
             })
             ->toArray();
+
+        return $this;
     }
 
-    public function saveMessageToDatabase(ChatMessage|string $message): AiChatMessage
+    public function addMessage(ChatMessage|string $message): static
     {
-        return $this->getAiChatFromDatabase()->addMessage($message);
+        $this->getAiChat()->addMessage($message);
+        return $this;
+    }
+
+    public function saveChat(): static
+    {
+        return $this;
     }
 }

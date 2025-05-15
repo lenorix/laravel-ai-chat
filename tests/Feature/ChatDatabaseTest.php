@@ -1,44 +1,46 @@
 <?php
 
-it('save messages', function () {
-    $dbChat = \Lenorix\LaravelAiChat\Models\AiChat::create();
+use Lenorix\LaravelAiChat\Models\AiChat;
+use MalteKuhr\LaravelGPT\GPTChat;
 
-    $aiChat = new class
+it('save messages', function () {
+    $dbChat = AiChat::create();
+
+    $aiChat = new class extends GPTChat
     {
         use Lenorix\LaravelAiChat\Traits\ChatDatabase;
-        use MalteKuhr\LaravelGPT\Concerns\HasChat;
 
-        protected function getAiChatFromDatabase(): \Lenorix\LaravelAiChat\Models\AiChat
+        protected function getAiChat(): AiChat
         {
-            return \Lenorix\LaravelAiChat\Models\AiChat::first();
+            return AiChat::first();
         }
     };
 
-    $aiChat->saveMessageToDatabase('Hello');
-    expect($dbChat->messages()->count())->toBe(1);
-    expect($dbChat->messages()->first()->content)->toBe('Hello');
+    $aiChat->addMessage('Hello');
+    expect($dbChat->messages()->count())->toBe(1)
+        ->and($dbChat->messages()->first()->content)->toBe('Hello');
     $dbChat->delete();
 });
 
 it('load messages', function () {
-    $dbChat = \Lenorix\LaravelAiChat\Models\AiChat::create();
+    $dbChat = AiChat::create();
     $dbChat->addMessage('Hello');
     $dbChat->addMessage('This');
     $dbChat->addMessage('World');
 
-    $aiChat = new class
+    $aiChat = new class extends GPTChat
     {
         use Lenorix\LaravelAiChat\Traits\ChatDatabase;
-        use MalteKuhr\LaravelGPT\Concerns\HasChat;
 
-        protected function getAiChatFromDatabase(): \Lenorix\LaravelAiChat\Models\AiChat
+        protected function getAiChat(): AiChat
         {
-            return \Lenorix\LaravelAiChat\Models\AiChat::first();
+            return AiChat::first();
         }
     };
 
     expect($aiChat->messages)->toBeEmpty();
-    $aiChat->loadChatFromDatabase(2);
+    $aiChat->loadChat(2);
+
     expect($aiChat->latestMessage()->content)->toBe('World');
     $dbChat->delete();
 });

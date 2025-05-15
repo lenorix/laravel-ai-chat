@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
+use MalteKuhr\LaravelGPT\Exceptions\GPTFunction\FunctionCallRequiresFunctionsException;
+use MalteKuhr\LaravelGPT\Exceptions\GPTFunction\MissingFunctionException;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 
 class AiChat extends Model
@@ -49,7 +51,7 @@ class AiChat extends Model
         ]);
     }
 
-    public function chatMessages(int $maxMessages = 200)
+    public function chatMessages(int $maxLatestMessages = 200): HasMany
     {
         $latestMessages = $this->messages()
             ->latest('created_at')
@@ -58,7 +60,7 @@ class AiChat extends Model
                 ChatRole::USER->value,
                 ChatRole::ASSISTANT->value,
             ])
-            ->take($maxMessages);
+            ->take($maxLatestMessages);
 
         return $this->messages()
             ->whereIn('id', function ($query) use ($latestMessages) {
@@ -69,6 +71,10 @@ class AiChat extends Model
             ->orderBy('id', 'asc');
     }
 
+    /**
+     * @throws MissingFunctionException
+     * @throws FunctionCallRequiresFunctionsException
+     */
     public function guessName(): string
     {
         $name = Cache::memo()->get('ai_chat_name_'.$this->id);
