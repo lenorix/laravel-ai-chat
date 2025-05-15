@@ -10,7 +10,9 @@ use MalteKuhr\LaravelGPT\Models\ChatMessage;
 
 trait ChatDatabase
 {
-    use HasChat;
+    use HasChat {
+        addMessage as protected traitAddMessage;
+    }
 
     abstract protected function getAiChat(): AiChat;
 
@@ -31,16 +33,7 @@ trait ChatDatabase
 
     public function addMessage(ChatMessage|string $message): static
     {
-        // This always must do same than HasChat::addMessage()
-        if (is_string($message)) {
-            $message = ChatMessage::from(
-                role: ChatRole::USER,
-                content: $message
-            );
-        }
-
-        $this->messages[] = $message;
-        // End of the same as HasChat::addMessage()
+        $this->traitAddMessage($message);
 
         $this->getAiChat()->addMessage($message);
 
