@@ -31,6 +31,17 @@ trait ChatDatabase
 
     public function addMessage(ChatMessage|string $message): static
     {
+        // This always must do same than HasChat::addMessage()
+        if (is_string($message)) {
+            $message = ChatMessage::from(
+                role: ChatRole::USER,
+                content: $message
+            );
+        }
+
+        $this->messages[] = $message;
+        // End of the same as HasChat::addMessage()
+
         $this->getAiChat()->addMessage($message);
 
         return $this;
