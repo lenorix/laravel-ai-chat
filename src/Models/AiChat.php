@@ -77,7 +77,7 @@ class AiChat extends Model
      */
     public function guessName(): string
     {
-        $name = Cache::memo()->get('ai_chat_name_'.$this->id);
+        $name = Cache::get('ai_chat_name_'.$this->id);
         if ($name) {
             return $name;
         }
@@ -86,16 +86,17 @@ class AiChat extends Model
             ->get()
             ->toArray();
 
+        $messagesJson = json_encode($messages);
         $name = GuessAiChatNameAction::make()
             ->send(json_encode(<<<EOT
                 ```json
-                $messages
+                $messagesJson
                 ```
                 EOT,
                 JSON_PRETTY_PRINT
             ))->content;
 
-        Cache::memo()->put('ai_chat_name_'.$this->id, $name, now()->addMinutes(5));
+        Cache::put('ai_chat_name_'.$this->id, $name, now()->addMinutes(5));
 
         return $name;
     }
