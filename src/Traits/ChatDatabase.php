@@ -14,7 +14,7 @@ trait ChatDatabase
 
     abstract protected function getAiChat(): AiChat;
 
-    public function loadChat(?int $maxLatestMessages=null): static
+    public function loadChat(?int $maxLatestMessages = null): static
     {
         $this->messages = $this->getAiChat()
             ->chatMessages($maxLatestMessages ?: 200)
@@ -32,6 +32,7 @@ trait ChatDatabase
     public function addMessage(ChatMessage|string $message): static
     {
         $this->getAiChat()->addMessage($message);
+
         return $this;
     }
 
