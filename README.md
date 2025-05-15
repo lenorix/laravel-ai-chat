@@ -26,7 +26,7 @@ composer require lenorix/laravel-ai-chat
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --tag="laravel-ai-chat-migrations"
+php artisan vendor:publish --tag="ai-chat-migrations"
 php artisan migrate
 ```
 

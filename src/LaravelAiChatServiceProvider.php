@@ -19,7 +19,7 @@ class LaravelAiChatServiceProvider extends PackageServiceProvider
             ->name('laravel-ai-chat')
             /*->hasConfigFile()
             ->hasViews()*/
-            ->hasMigration('create_laravel_ai_chat_table')
+            ->hasMigration('create_ai_chat_table')
             /* ->hasCommand(LaravelAiChatCommand::class) */;
     }
 }
