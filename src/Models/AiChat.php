@@ -50,10 +50,6 @@ class AiChat extends Model
             $content = $message;
         }
 
-        if (! in_array($role, [ChatRole::USER->value, ChatRole::ASSISTANT->value])) {
-            throw new \InvalidArgumentException('Invalid role provided. Must be either "user" or "assistant".');
-        }
-
         return $this->messages()->create([
             'role' => $role,
             'content' => $content,
