@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Exceptions\GPTFunction\FunctionCallRequiresFunctionsException;
@@ -34,7 +35,10 @@ class AiChat extends Model
     public function addMessage(ChatMessage|string $message): ?AiChatMessage
     {
         if ($message instanceof ChatMessage) {
-            if ($message->role != ChatRole::USER && $message->role != ChatRole::ASSISTANT) {
+            if (empty($message->content) || ($message->role != ChatRole::USER && $message->role != ChatRole::ASSISTANT)) {
+                Log::debug('Invalid message provided.', [
+                    'message' => $message,
+                ]);
                 return null;
             }
 
