@@ -31,9 +31,13 @@ class AiChat extends Model
         return $this->hasMany(AiChatMessage::class, 'ai_chat_id');
     }
 
-    public function addMessage(ChatMessage|string $message): AiChatMessage
+    public function addMessage(ChatMessage|string $message): ?AiChatMessage
     {
         if ($message instanceof ChatMessage) {
+            if ($message->role != ChatRole::USER && $message->role != ChatRole::ASSISTANT) {
+                return null;
+            }
+
             $role = $message->role->value;
             $content = $message->content;
         } else {
