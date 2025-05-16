@@ -39,6 +39,7 @@ class AiChat extends Model
                 Log::debug('Invalid message provided.', [
                     'message' => $message,
                 ]);
+
                 return null;
             }
 
