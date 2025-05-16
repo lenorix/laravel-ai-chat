@@ -70,7 +70,7 @@ class AiChat extends Model
         return $this->messages()
             ->whereIn('id', function ($query) use ($latestMessages) {
                 $query->select('id')
-                    ->from($latestMessages);
+                    ->fromSub($latestMessages, 'latest_messages');
             })
             ->orderBy('created_at', 'asc')
             ->orderBy('id', 'asc');
