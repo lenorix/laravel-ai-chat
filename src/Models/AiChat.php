@@ -50,6 +50,10 @@ class AiChat extends Model
             $content = $message;
         }
 
+        if (!is_string($content)) {
+            $content = json_encode($content);
+        }
+
         return $this->messages()->create([
             'role' => $role,
             'content' => $content,
