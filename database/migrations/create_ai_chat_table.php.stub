@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->foreignUlid('ai_chat_id')->constrained('ai_chats')->cascadeOnDelete();
 
-            $table->enum('role', ['user', 'assistant']);
+            $table->enum('role', ['user', 'assistant', 'function']);
 
             $table->text('content');
 
