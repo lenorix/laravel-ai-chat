@@ -35,7 +35,7 @@ class AiChat extends Model
     public function addMessage(ChatMessage|string $message): ?AiChatMessage
     {
         if ($message instanceof ChatMessage) {
-            if (empty($message->content) || ($message->role != ChatRole::USER && $message->role != ChatRole::ASSISTANT)) {
+            if (empty($message->content)) {
                 Log::debug('Invalid message provided.', [
                     'message' => $message,
                 ]);
