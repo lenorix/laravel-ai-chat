@@ -22,8 +22,10 @@ return new class extends Migration
             $table->foreignUlid('ai_chat_id')->constrained('ai_chats')->cascadeOnDelete();
 
             $table->string('role');
-            $table->json('content')->nullable();
+            $table->string('content')->nullable();
+            $table->string('tool_call_id')->nullable();
             $table->json('tool_calls')->nullable();
+            $table->string('name')->nullable();
 
             $table->timestamps();
         });
