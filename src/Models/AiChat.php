@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
-use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
-use Lenorix\Ai\Chat\CoreMessageRole;
 use Lenorix\Ai\Chat\CoreMessage;
+use Lenorix\Ai\Chat\CoreMessageRole;
+use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
 
 class AiChat extends Model
 {
