@@ -50,7 +50,7 @@ class AiChat extends Model
             $toolCalls = null;
         }
 
-        if (!is_string($content)) {
+        if (! is_string($content)) {
             $content = json_encode($content);
         }
 
