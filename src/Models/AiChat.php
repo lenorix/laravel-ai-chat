@@ -44,10 +44,12 @@ class AiChat extends Model
             $role = $message->role->value;
             $content = $message->content;
             $toolCalls = $message->toolCalls;
+            $toolCallId = $message->toolCallId;
         } else {
             $role = CoreMessageRole::USER->value;
             $content = $message;
             $toolCalls = null;
+            $toolCallId = null;
         }
 
         if (! is_string($content)) {
@@ -58,6 +60,7 @@ class AiChat extends Model
             'role' => $role,
             'content' => $content,
             'tool_calls' => $toolCalls,
+            'tool_call_id' => $toolCallId,
         ]);
     }
 
