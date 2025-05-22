@@ -5,14 +5,14 @@ namespace Lenorix\LaravelAiChat\Traits;
 use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\LaravelAiChat\Models\AiChat;
 use Lenorix\LaravelAiChat\Models\AiChatMessage;
-use MalteKuhr\LaravelGPT\Concerns\HasChat;
+use MalteKuhr\LaravelGPT\Concerns\HasChatShim;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 use MalteKuhr\LaravelGPT\Shim\GPTChatShim;
 
 trait ChatDatabase
 {
-    use HasChat {
+    use HasChatShim {
         addMessage as protected traitAddMessage;
     }
 
