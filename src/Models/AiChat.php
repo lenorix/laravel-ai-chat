@@ -106,7 +106,7 @@ class AiChat extends Model
                 JSON_PRETTY_PRINT
             ));
 
-        Cache::put('ai_chat_name_'.$this->id, $name, now()->addMinutes(5));
+        Cache::put('ai_chat_name_'.$this->id, $name, now()->addMinutes(30));
 
         return $name;
     }
