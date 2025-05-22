@@ -4,8 +4,9 @@ namespace Lenorix\LaravelAiChat\Ai\Actions;
 
 use Closure;
 use MalteKuhr\LaravelGPT\GPTAction;
+use MalteKuhr\LaravelGPT\Shim\GPTActionShim;
 
-class GuessAiChatNameAction extends GPTAction
+class GuessAiChatNameAction extends GPTActionShim
 {
     public function systemMessage(): ?string
     {
@@ -28,6 +29,23 @@ class GuessAiChatNameAction extends GPTAction
     {
         return [
             'name' => 'required|string|max:50',
+        ];
+    }
+
+    public function parameters(): array
+    {
+        return [
+            'name' => [
+                'type' => 'string',
+                'description' => 'Guessed name for the conversation, max 50 chars.',
+            ],
+        ];
+    }
+
+    public function requiredParameters(): array
+    {
+        return [
+            'name',
         ];
     }
 }
