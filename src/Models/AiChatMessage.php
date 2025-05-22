@@ -20,6 +20,17 @@ class AiChatMessage extends Model
         'ai_chat_id',
         'role',
         'content',
+        'tool_calls',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'content' => 'json',
+        'tool_calls' => 'json',
     ];
 
     public function chat(): BelongsTo

@@ -2,11 +2,13 @@
 
 namespace Lenorix\LaravelAiChat\Traits;
 
+use Lenorix\Ai\Chat\CoreMessage;
 use Lenorix\LaravelAiChat\Models\AiChat;
 use Lenorix\LaravelAiChat\Models\AiChatMessage;
 use MalteKuhr\LaravelGPT\Concerns\HasChat;
 use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
+use MalteKuhr\LaravelGPT\Shim\GPTChatShim;
 
 trait ChatDatabase
 {
@@ -31,9 +33,13 @@ trait ChatDatabase
         return $this;
     }
 
-    public function addMessage(ChatMessage|string $message): static
+    public function addMessage(ChatMessage|CoreMessage|string $message): static
     {
         $this->traitAddMessage($message);
+
+        if ($message instanceof ChatMessage) {
+            $message = GPTChatShim::migrateMessage($message);
+        }
 
         $this->getAiChat()->addMessage($message);
 

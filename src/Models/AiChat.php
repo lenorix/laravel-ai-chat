@@ -9,10 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Lenorix\LaravelAiChat\Ai\Actions\GuessAiChatNameAction;
-use MalteKuhr\LaravelGPT\Enums\ChatRole;
-use MalteKuhr\LaravelGPT\Exceptions\GPTFunction\FunctionCallRequiresFunctionsException;
-use MalteKuhr\LaravelGPT\Exceptions\GPTFunction\MissingFunctionException;
-use MalteKuhr\LaravelGPT\Models\ChatMessage;
+use Lenorix\Ai\Chat\CoreMessageRole;
+use Lenorix\Ai\Chat\CoreMessage;
 
 class AiChat extends Model
 {
@@ -32,9 +30,9 @@ class AiChat extends Model
         return $this->hasMany(AiChatMessage::class, 'ai_chat_id');
     }
 
-    public function addMessage(ChatMessage|string $message): ?AiChatMessage
+    public function addMessage(CoreMessage|string $message): ?AiChatMessage
     {
-        if ($message instanceof ChatMessage) {
+        if ($message instanceof CoreMessage) {
             if (empty($message->content)) {
                 Log::debug('Invalid message provided.', [
                     'message' => $message,
@@ -45,9 +43,11 @@ class AiChat extends Model
 
             $role = $message->role->value;
             $content = $message->content;
+            $toolCalls = $message->toolCalls;
         } else {
-            $role = ChatRole::USER->value;
+            $role = CoreMessageRole::USER->value;
             $content = $message;
+            $toolCalls = null;
         }
 
         if (!is_string($content)) {
@@ -57,6 +57,7 @@ class AiChat extends Model
         return $this->messages()->create([
             'role' => $role,
             'content' => $content,
+            'tool_calls' => $toolCalls,
         ]);
     }
 
@@ -66,8 +67,8 @@ class AiChat extends Model
             ->latest('created_at')
             ->latest('id')
             ->whereIn('role', [
-                ChatRole::USER->value,
-                ChatRole::ASSISTANT->value,
+                CoreMessageRole::USER->value,
+                CoreMessageRole::ASSISTANT->value,
             ])
             ->take($maxLatestMessages);
 
