@@ -118,10 +118,11 @@ class AiChat extends Model
             return $name;
         }
 
-        try {
+        return 'Unnamed'; // Better queue it, could be slow enough to fail the request.
+        /*try {
             return $this->guessName();
         } catch (\Exception $e) {
             return 'Unnamed';
-        }
+        }*/
     }
 }
