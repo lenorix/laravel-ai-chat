@@ -3,10 +3,10 @@
 namespace Lenorix\LaravelAiChat\Traits;
 
 use Lenorix\Ai\Chat\CoreMessage;
+use Lenorix\Ai\Chat\CoreMessageRole;
 use Lenorix\LaravelAiChat\Models\AiChat;
 use Lenorix\LaravelAiChat\Models\AiChatMessage;
 use MalteKuhr\LaravelGPT\Concerns\HasChatShim;
-use MalteKuhr\LaravelGPT\Enums\ChatRole;
 use MalteKuhr\LaravelGPT\Models\ChatMessage;
 use MalteKuhr\LaravelGPT\Shim\GPTChatShim;
 
@@ -24,9 +24,12 @@ trait ChatDatabase
             ->chatMessages($maxLatestMessages ?: 200)
             ->get()
             ->map(function (AiChatMessage $message) {
-                $role = ChatRole::tryFrom($message->role);
+                $role = CoreMessageRole::from($message->role);
 
-                return new ChatMessage($role, content: $message->content);
+                return new CoreMessage(
+                    role: $role,
+                    content: $message->content
+                );
             })
             ->toArray();
 
