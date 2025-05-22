@@ -3,7 +3,6 @@
 namespace Lenorix\LaravelAiChat\Ai\Actions;
 
 use Closure;
-use MalteKuhr\LaravelGPT\GPTAction;
 use MalteKuhr\LaravelGPT\Shim\GPTActionShim;
 
 class GuessAiChatNameAction extends GPTActionShim
