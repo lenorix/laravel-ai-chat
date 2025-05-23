@@ -28,7 +28,9 @@ trait ChatDatabase
 
                 return new CoreMessage(
                     role: $role,
-                    content: $message->content
+                    content: $message->content,
+                    toolCalls: $message->tool_calls,
+                    toolCallId: $message->tool_call_id
                 );
             })
             ->toArray();

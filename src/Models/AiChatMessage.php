@@ -21,6 +21,7 @@ class AiChatMessage extends Model
         'role',
         'content',
         'tool_calls',
+        'tool_call_id',
     ];
 
     /**
