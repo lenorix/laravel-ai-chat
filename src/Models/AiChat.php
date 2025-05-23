@@ -33,7 +33,7 @@ class AiChat extends Model
     public function addMessage(CoreMessage|string $message): ?AiChatMessage
     {
         if ($message instanceof CoreMessage) {
-            if (empty($message->content)) {
+            if (empty($message->content) && empty($message->toolCalls)) {
                 Log::debug('Invalid message provided.', [
                     'message' => $message,
                 ]);
