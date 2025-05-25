@@ -72,6 +72,7 @@ class AiChat extends Model
             ->whereIn('role', [
                 CoreMessageRole::USER->value,
                 CoreMessageRole::ASSISTANT->value,
+                CoreMessageRole::TOOL->value,
             ])
             ->take($maxLatestMessages);
 
